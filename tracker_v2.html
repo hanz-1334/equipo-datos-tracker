@@ -28,9 +28,6 @@
   .pill.amber{background:var(--amber-bg);color:var(--amber);}
   .pill.blue{background:var(--blue-bg);color:var(--blue);}
   .pill.active{border-color:currentColor;}
-  .role-toggle{display:flex;background:var(--panel-2);border-radius:20px;padding:3px;border:1px solid var(--border);}
-  .role-toggle button{border:none;background:transparent;color:var(--text-dim);padding:6px 14px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;}
-  .role-toggle button.active{background:var(--accent);color:#fff;}
   .mode-toggle{display:flex;gap:6px;}
   .mode-toggle button{border:1px solid var(--border);background:var(--panel-2);color:var(--text-dim);padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;}
   .mode-toggle button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
@@ -92,7 +89,9 @@
   .note-form{display:flex;flex-direction:column;gap:8px;}
   .note-form textarea{width:100%;min-height:60px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;}
   .note-form-row{display:flex;justify-content:flex-end;gap:8px;align-items:center;}
-  .note-form-row .note-author-label{font-size:12px;color:var(--text-dim);margin-right:auto;}
+  .note-role-toggle{display:flex;background:var(--bg);border-radius:16px;padding:3px;border:1px solid var(--border);margin-right:auto;}
+  .note-role-toggle button{border:none;background:transparent;color:var(--text-dim);padding:5px 12px;border-radius:13px;font-size:11px;font-weight:600;cursor:pointer;}
+  .note-role-toggle button.active{background:var(--accent);color:#fff;}
   .note-submit-btn{background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;}
   .note-submit-btn:disabled{opacity:0.5;cursor:default;}
   .note-status{font-size:12px;color:var(--text-faint);}
@@ -125,10 +124,6 @@
     <div class="mode-toggle">
       <button id="btnModoProyectos" class="active" onclick="setMode('proyectos')">Proyectos</button>
       <button id="btnModo11" onclick="setMode('1-1')">Modo 1:1</button>
-    </div>
-    <div class="role-toggle">
-      <button id="btnMiguel" class="active" onclick="setRole('Miguel')">Miguel</button>
-      <button id="btnAris" onclick="setRole('Aris')">Aris</button>
     </div>
   </div>
 
@@ -493,8 +488,6 @@ function setMode(mode){
 
 function setRole(role){
   state.role = role;
-  document.getElementById("btnMiguel").classList.toggle("active", role==="Miguel");
-  document.getElementById("btnAris").classList.toggle("active", role==="Aris");
   render();
 }
 
@@ -603,7 +596,10 @@ function renderMain(){
       <div class="note-form">
         <textarea id="note-input-${p.id}" placeholder="Escribe una nota sobre este proyecto…"></textarea>
         <div class="note-form-row">
-          <span class="note-author-label">Se guardará como: <strong>${state.role}</strong></span>
+          <div class="note-role-toggle">
+            <button class="${state.role==='Miguel'?'active':''}" onclick="setRole('Miguel')">Miguel</button>
+            <button class="${state.role==='Aris'?'active':''}" onclick="setRole('Aris')">Aris</button>
+          </div>
           <span class="note-status" id="note-status-${p.id}"></span>
           <button class="note-submit-btn" onclick="submitNote('${p.id}')">Agregar nota</button>
         </div>
