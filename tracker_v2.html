@@ -146,20 +146,18 @@ const PROJECTS = [
     name: "Repositorio de Dashboards",
     icon: "🗂️",
     urgency: "red",
-    estado: "Bloqueado — dos frentes abiertos",
-    deadline: "10 jun (bug Comando)",
+    estado: "Activo — riesgo de governance pendiente",
+    deadline: null,
     personas: ["Mau", "Capi"],
-    actualizado: "2026-06-30",
+    actualizado: "2026-07-08",
     porque: "Sin un repositorio estructurado, hay duplicidad de dashboards, confusión sobre cuáles son oficiales, y riesgo de que se borren dashboards en uso por falta de documentación (AC-04).",
     estadoActual: [
-      "Bug de \"Comando\": la sede Comando desapareció del nuevo repositorio, bloqueando el despliegue final. Deadline interno 10 junio, con Mau.",
       "Riesgo de governance en Brasil: planean borrar dashboards sin actividad reciente. AC-04 urgente — etiquetar y documentar todos los dashboards activos antes de que eso pase.",
       "Repositorio organizado con tabs Publicados / No publicados, categorías por audiencia (CX vs Gyms).",
       "Repositorio + glosario ya en producción en Notion.",
       "Governance adicional: propuesta de \"Dashboard Gemelo\" (snapshot estático automático cada día 2 del mes)."
     ],
     pendientes: [
-      "Resolver bug de Comando con Mau",
       "Etiquetar y documentar todos los dashboards activos (AC-04)",
       "Hacer el cruce de inventarios Miguel–Aris",
       "Evaluar implementación del \"Dashboard Gemelo\""
@@ -430,7 +428,6 @@ const ACUERDOS = [
 // Modo 1:1 — checklist semanal
 const CHECKLIST = {
   urgente: [
-    { title: "Repositorio — bug de Comando", context: "La sede \"Comando\" desapareció del nuevo repositorio, bloquea el despliegue final. Acción con Mau.", question: "¿Ya se resolvió? ¿Sigue bloqueando el deploy?", link: "repositorio-dashboards" },
     { title: "Governance Brasil (AC-04)", context: "Brasil va a borrar dashboards sin actividad reciente. Hay que etiquetar y documentar todos los dashboards activos antes de que pase.", question: "¿Ya se etiquetaron todos? ¿Cuántos faltan?", link: "repositorio-dashboards" },
     { title: "Pagos — Error \"Time Out\" de HJK", context: "Pedir a Toño el push para resolverlo. Deadline del proyecto: 27 mayo.", question: "¿Toño ya hizo el push? ¿Sigue el error activo?", link: "control-pagos" }
   ],
