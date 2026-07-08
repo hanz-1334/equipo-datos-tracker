@@ -78,6 +78,25 @@
 
   .notes-placeholder{background:var(--panel-2);border:1px dashed var(--border);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--text-faint);line-height:1.6;}
 
+  /* Notas de proyecto (Google Sheet vía Apps Script) */
+  .notes-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .note-item{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
+  .note-item.resuelta{opacity:0.5;}
+  .note-meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-faint);margin-bottom:4px;}
+  .note-author{font-weight:700;color:var(--text-dim);}
+  .note-text{font-size:13px;color:var(--text);line-height:1.5;white-space:pre-wrap;}
+  .note-actions{display:flex;gap:10px;margin-top:6px;}
+  .note-actions button{background:none;border:none;color:var(--text-faint);font-size:11px;cursor:pointer;padding:0;}
+  .note-actions button:hover{color:var(--accent);}
+  .notes-empty{font-size:13px;color:var(--text-faint);margin-bottom:14px;}
+  .note-form{display:flex;flex-direction:column;gap:8px;}
+  .note-form textarea{width:100%;min-height:60px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:13px;padding:10px 12px;resize:vertical;}
+  .note-form-row{display:flex;justify-content:flex-end;gap:8px;align-items:center;}
+  .note-form-row .note-author-label{font-size:12px;color:var(--text-dim);margin-right:auto;}
+  .note-submit-btn{background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;}
+  .note-submit-btn:disabled{opacity:0.5;cursor:default;}
+  .note-status{font-size:12px;color:var(--text-faint);}
+
   /* Modo 1:1 */
   .checklist-section{margin-bottom:24px;}
   .checklist-section h2{display:flex;align-items:center;gap:8px;font-size:14px;text-transform:uppercase;letter-spacing:0.4px;margin:0 0 12px;}
@@ -121,6 +140,9 @@
 </div>
 
 <script>
+/* ===================== CONFIG ===================== */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnGt64J5CFjQuPC_ytMUorbtKQ3tZQ6_Du2WQLPVQKeV5HJw_0V2bRxPkWB75YQ8_x/exec";
+
 /* ===================== DATA ===================== */
 // urgency: 'red' | 'amber' | 'blue'
 const PROJECTS = [
@@ -575,11 +597,20 @@ function renderMain(){
 
     <div class="card">
       <h3>Notas de este proyecto</h3>
-      <div class="notes-placeholder">
-        Las notas en tiempo real de este proyecto viven en una Google Sheet aparte (vía Apps Script) y se actualizan solas — no se muestran ni se editan desde este tracker.
+      <div id="notes-container-${p.id}">
+        <div class="notes-empty">Cargando notas…</div>
+      </div>
+      <div class="note-form">
+        <textarea id="note-input-${p.id}" placeholder="Escribe una nota sobre este proyecto…"></textarea>
+        <div class="note-form-row">
+          <span class="note-author-label">Se guardará como: <strong>${state.role}</strong></span>
+          <span class="note-status" id="note-status-${p.id}"></span>
+          <button class="note-submit-btn" onclick="submitNote('${p.id}')">Agregar nota</button>
+        </div>
       </div>
     </div>
   `;
+  loadNotes(p.id);
 }
 
 function renderChecklistMode(main){
@@ -614,6 +645,95 @@ function renderChecklistMode(main){
 function toggleCheck(id){
   state.checked[id] = !state.checked[id];
   renderChecklistMode(document.getElementById("main"));
+}
+
+/* ===================== NOTAS (Google Sheet vía Apps Script) ===================== */
+function fmtFecha(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString("es-MX", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+  }catch(e){ return iso; }
+}
+
+async function loadNotes(projectId){
+  const container = document.getElementById(`notes-container-${projectId}`);
+  if(!container) return; // el usuario ya cambió de vista antes de que respondiera el fetch
+  try{
+    const res = await fetch(`${APPS_SCRIPT_URL}?proyecto=${encodeURIComponent(projectId)}`);
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || "Error desconocido");
+    renderNotes(projectId, data.notas || []);
+  }catch(err){
+    const c = document.getElementById(`notes-container-${projectId}`);
+    if(c) c.innerHTML = `<div class="notes-empty">No se pudieron cargar las notas (${err.message}). Revisa que APPS_SCRIPT_URL sea correcto y que el deploy tenga acceso "Cualquiera con el enlace".</div>`;
+  }
+}
+
+function renderNotes(projectId, notas){
+  const container = document.getElementById(`notes-container-${projectId}`);
+  if(!container) return;
+  if(!notas.length){
+    container.innerHTML = `<div class="notes-empty">Todavía no hay notas en este proyecto.</div>`;
+    return;
+  }
+  container.innerHTML = `<div class="notes-list">
+    ${notas.map(n => `
+      <div class="note-item ${n.resuelto === true || n.resuelto === "TRUE" ? "resuelta" : ""}">
+        <div class="note-meta">
+          <span><span class="note-author">${n.autor || "Desconocido"}</span> · ${fmtFecha(n.fecha)}</span>
+        </div>
+        <div class="note-text">${(n.texto || "").replace(/</g,"&lt;")}</div>
+        <div class="note-actions">
+          <button onclick="resolveNote('${n.id}','${projectId}')">${n.resuelto === true || n.resuelto === "TRUE" ? "✓ Resuelta" : "Marcar resuelta"}</button>
+          <button onclick="deleteNote('${n.id}','${projectId}')">Eliminar</button>
+        </div>
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+async function submitNote(projectId){
+  const input = document.getElementById(`note-input-${projectId}`);
+  const statusEl = document.getElementById(`note-status-${projectId}`);
+  const texto = input.value.trim();
+  if(!texto) return;
+  statusEl.textContent = "Guardando…";
+  try{
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" }, // evita preflight CORS con Apps Script
+      body: JSON.stringify({ action:"create", proyecto:projectId, autor:state.role, texto })
+    });
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || "Error desconocido");
+    input.value = "";
+    statusEl.textContent = "";
+    loadNotes(projectId);
+  }catch(err){
+    statusEl.textContent = `Error: ${err.message}`;
+  }
+}
+
+async function resolveNote(id, projectId){
+  try{
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ action:"resolve", id })
+    });
+    loadNotes(projectId);
+  }catch(err){ console.error(err); }
+}
+
+async function deleteNote(id, projectId){
+  try{
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ action:"delete", id })
+    });
+    loadNotes(projectId);
+  }catch(err){ console.error(err); }
 }
 
 function render(){
