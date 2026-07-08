@@ -237,6 +237,7 @@ const PROJECTS = [
       "Riesgo de CAC post-promoción identificado.",
       "Discrepancia QuickSight vs Redshift en la cifra de Repase: ya diagnosticada y resuelta en la metodología SQL de Segmentación RFM.",
       "LTV todavía no está integrado al dashboard — bloquea la presentación formal.",
+      "Esta segmentación alimenta directamente Q44 (Usuarios en Riesgo de Churn) — ver Predictor de Churn.",
       "Acuerdo de presentación: Slack Clip de máx. 3 min + encuesta NPS dos semanas después del lanzamiento."
     ],
     pendientes: [
@@ -274,19 +275,25 @@ const PROJECTS = [
     name: "Predictor de Churn",
     icon: "📉",
     urgency: "amber",
-    estado: "Dashboard construido. Pendiente de validación",
+    estado: "Q44 en producción y validada — falta cruce con bajas legales",
     deadline: null,
     personas: [],
-    actualizado: "2026-06-30",
+    actualizado: "2026-07-08",
     porque: "Permite anticipar qué usuarios están en riesgo de darse de baja, para poder actuar antes (retención) en lugar de solo reaccionar después.",
     estadoActual: [
-      "El modelo/dashboard ya está listo.",
-      "Paso pendiente crítico: cruzar sus predicciones contra los correos reales de bajas legales del equipo legal.",
-      "Sin esta validación, no se puede presentar con confianza — evidencia primero, no asumir que el modelo funciona."
+      "Q44 \"Usuarios en Riesgo de Churn — Alertas Activas\" ya está en producción y validada — en la práctica, este query ES el predictor de churn.",
+      "Qué mide: lista accionable de usuarios activos hoy con al menos una alerta de riesgo, basada en la trayectoria de su segmento RFM de los últimos 5 meses.",
+      "4 reglas de alerta activas: (1) No adopción crítica — Sleeper temprano, antigüedad 2–4m, probabilidad 20–28% → onboarding inmediato. (2) Congelado prolongado — antigüedad 13–24m, probabilidad 14–18% → retención proactiva. (3) Fricción financiera — viene de \"Por cobrar\", probabilidad 8–9% → revisar método de pago. (4) Tóxico histórico — 3+ meses tóxico en los últimos 5m, probabilidad 4–6% → monitoreo.",
+      "Tasa base de churn voluntario 2026: 6.57% mensual — solo el 25.1% de las cancelaciones son churn voluntario real accionable (el resto es migración/upgrade, impago, baja de empresa, fraude o admin).",
+      "Hallazgo clave: los usuarios tóxicos casi no cancelan solos (0.2x la tasa base) — requieren intervención activa, no dejarlos ir por su cuenta.",
+      "Hallazgo clave: \"Oro Nuevo\" cancela más que nadie (7.7%) — es un problema de adopción, no de satisfacción.",
+      "La antigüedad es el predictor individual más fuerte de churn en todos los segmentos.",
+      "Fraude: no tiene patrón predictivo útil desde la segmentación RFM — el sistema de detección de fraude ya lo captura por separado; no hay acción preventiva adicional posible desde este modelo.",
+      "Paso pendiente crítico: cruzar las alertas de Q44 contra los correos reales de bajas legales del equipo legal — sin esta validación, no se puede presentar con confianza (evidencia primero, no asumir que el modelo funciona)."
     ],
     pendientes: [
       "Hacer el cruce contra bajas legales",
-      "Medir precisión real del predictor tras el cruce",
+      "Medir precisión real de las 4 alertas tras el cruce",
       "Decidir presentación formal una vez validado"
     ],
     relacionado: ["rfm", "chivato"]
