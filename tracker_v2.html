@@ -146,21 +146,33 @@ const PROJECTS = [
     name: "Repositorio de Dashboards",
     icon: "🗂️",
     urgency: "red",
-    estado: "Activo — riesgo de governance pendiente",
+    estado: "Activo — foco en depuración del catálogo, publicación delegada a Capi",
     deadline: null,
-    personas: ["Mau", "Capi"],
-    actualizado: "2026-07-08",
+    personas: ["Mau", "Capi", "Juana"],
+    actualizado: "2026-07-10",
     porque: "Sin un repositorio estructurado, hay duplicidad de dashboards, confusión sobre cuáles son oficiales, y riesgo de que se borren dashboards en uso por falta de documentación (AC-04).",
     estadoActual: [
       "Riesgo de governance en Brasil: planean borrar dashboards sin actividad reciente. AC-04 urgente — etiquetar y documentar todos los dashboards activos antes de que eso pase.",
       "Repositorio organizado con tabs Publicados / No publicados, categorías por audiencia (CX vs Gyms).",
       "Repositorio + glosario ya en producción en Notion.",
-      "Governance adicional: propuesta de \"Dashboard Gemelo\" (snapshot estático automático cada día 2 del mes)."
+      "Governance adicional: propuesta de \"Dashboard Gemelo\" (snapshot estático automático cada día 2 del mes).",
+      "[10 jul] Consolidación versión 2 del repositorio: hoja \"Rosario\" (pestaña \"dashboard versión 2\") como fuente de la verdad centralizada — unifica y desduplica tableros, con pestañas por área y propiedades.",
+      "[10 jul] ~60 dashboards solo de Brasil, muchos duplicados — Ops/Salesforce con hasta 3-4 versiones que hacen lo mismo. Requiere depuración para definir fuente única y evitar que se \"planchen\" datos incorrectos al actualizar.",
+      "[10 jul] Control de visibilidad: campo booleano (\"tic\" true/false) en el sheet maestro — solo los marcados como verdaderos se muestran al equipo final; los ocultos quedan en pestaña separada de uso interno.",
+      "[10 jul] Estrategia de publicación evaluada: OneDrive/Google Sheets como fuente conectada requiere refrescar vínculos a mano (no viable) · S3 sin acceso · intranet interna (vía Capi, similar a lo hecho antes) es la opción viable — implementación técnica delegada a Capi/equipo correspondiente; prioridad del equipo de datos es depurar el catálogo, no publicar.",
+      "[10 jul] Colaboración con Capi: centralizar la creación de dashboards para que otros equipos no generen tableros desde cero sin conocer las lógicas y métricas ya establecidas.",
+      "[10 jul] Nueva estrategia de adopción: encuesta de satisfacción (1-5 estrellas) post-lanzamiento del repositorio + dashboards nuevos (RFM, etc.); en evaluación integrarla dentro del propio repositorio con formulario de feedback para calificaciones ≤3; capacitaciones selectivas por equipo (ej. CX) para fomentar autoservicio.",
+      "3 nuevos Acuerdos Permanentes derivados de la reunión del 10 jul: AC-05 (repositorio como fuente única), AC-06 (validación previa obligatoria), AC-07 (involucramiento temprano del equipo de datos) — ver Acuerdos Permanentes."
     ],
     pendientes: [
       "Etiquetar y documentar todos los dashboards activos (AC-04)",
       "Hacer el cruce de inventarios Miguel–Aris",
-      "Evaluar implementación del \"Dashboard Gemelo\""
+      "Evaluar implementación del \"Dashboard Gemelo\"",
+      "Conectar el sheet maestro (\"Rosario v2\") al repositorio como fuente dinámica en vivo (Aris)",
+      "Sesión conjunta Miguel + Aris para clasificar dashboards: mostrar / no mostrar / obsoleto / pendiente — próxima reunión",
+      "Validar con Juana el listado ya depurado",
+      "Comunicar que toda solicitud de dashboard en QuickSight debe canalizarse por el equipo de datos (inmediato)",
+      "Diseñar encuesta de satisfacción post-lanzamiento y evaluar viabilidad de calificación integrada por dashboard"
     ],
     relacionado: ["control-pagos"]
   },
@@ -169,10 +181,10 @@ const PROJECTS = [
     name: "Control y Validación de Pagos",
     icon: "💳",
     urgency: "red",
-    estado: "En progreso, con error técnico activo",
+    estado: "Pausado — proceso caótico del lado de la fuente de datos (Fair)",
     deadline: "27 mayo 2026",
-    personas: ["Miguel Ángel", "Toño", "Dani", "Angi", "Juan"],
-    actualizado: "2026-06-30",
+    personas: ["Miguel Ángel", "Toño", "Dani", "Angi", "Juan", "Angie", "Capi", "Fair"],
+    actualizado: "2026-07-10",
     porque: "El control de pagos a gyms es hoy manual. El riesgo: no pagarles a tiempo daña la relación con proveedores y la operación. Meta: limitar el impago a máximo 3 meses y automatizar recordatorios vía Marketing Cloud.",
     estadoActual: [
       "Error \"Red Time Out\" de HJK bloqueando el flujo. Acción concreta: pedir a Toño el push que lo resuelve.",
@@ -183,13 +195,21 @@ const PROJECTS = [
       "Marketing Cloud: recordatorios automáticos cada 2 días, del día 4 al 24 del mes.",
       "Meta final: borrón y cuenta nueva a partir de junio/julio 2026.",
       "Actualización junio: bandera CFDI → Salesforce → Marketing Cloud. Sesión con HJK el 6 de junio (Dani + Angi).",
-      "Error crítico de facturación (mayo): facturas de febrero con fecha de enero — loop fiscal. Falta validar con Juan."
+      "Error crítico de facturación (mayo): facturas de febrero con fecha de enero — loop fiscal. Falta validar con Juan.",
+      "[10 jul] PAUSADO: Fair está borrando y recargando datos de meses pasados casi a diario porque algunas facturas no entraron a tiempo en el corte y aparecían como impagas — impide tener una base estable para trabajar.",
+      "[10 jul] Decisión: pausar el proyecto de automatización HJK hasta que Capi libere capacidad de desarrollo.",
+      "[10 jul] Mientras tanto, Angie continúa con proceso manual funcional (cuentas actualizadas al corte del día anterior, dejado listo por Aris); se le compartió una base de gimnasios con correos para depurar por su lado.",
+      "[10 jul] Se agregará columna \"nuevo\" al dashboard de Angie para filtrar solo los casos nuevos y facilitar la comunicación.",
+      "[10 jul] Necesidad explícita (ambas minutas de esta reunión): establecer un flujo formal de responsabilidades y un proyecto de automatización en Salesforce para dejar de operar de forma manual/reactiva."
     ],
     pendientes: [
       "Confirmar si Toño ya resolvió el error Time Out",
       "Validar formato de la base de cobranza con Angi",
       "Cerrar la sesión con HJK del 6 de junio y documentar acuerdos",
-      "Validar con Juan el error de fechas de facturación (feb con fecha ene)"
+      "Validar con Juan el error de fechas de facturación (feb con fecha ene)",
+      "Agregar columna \"nuevo\" al dashboard de Angie (Aris, corto plazo)",
+      "Retomar conversación grupal para definir responsabilidades y flujo del proceso HJK — cuando se reactive",
+      "Retomar automatización con Capi cuando tenga disponibilidad de desarrollo"
     ],
     relacionado: ["repositorio-dashboards"]
   },
@@ -198,22 +218,26 @@ const PROJECTS = [
     name: "Dashboard Gyms Inactivos — Chivato",
     icon: "🚨",
     urgency: "red",
-    estado: "Activo, con hallazgos críticos",
+    estado: "Activo, con hallazgos críticos + nueva propuesta de vista rápida",
     deadline: null,
     personas: ["Miri", "Tiwu"],
-    actualizado: "2026-06-12",
+    actualizado: "2026-07-10",
     porque: "La red de gyms está inflada por ubicaciones inactivas que distorsionan los KPIs de cobertura real. Sin un sistema de alerta temprana, se sigue reportando cobertura sobre gyms \"zombis\".",
     estadoActual: [
       "AK1: caso con 500+ días sin token pero figurando como \"activo\".",
       "25% de la red actual son \"zombis\" — figuran activos pero no generan transacciones.",
       "Cobertura real: 75% (meta: 80–85%).",
       "Umbral real de churn: 53 días de inactividad.",
-      "Alerta \"chivato\": sistema de alerta automática a los 45 días de inactividad — por construir."
+      "Alerta \"chivato\": sistema de alerta automática a los 45 días de inactividad — por construir.",
+      "[10 jul] Nueva propuesta: pestaña rápida de gimnasios sin token (o con token pero inactivos) — listado, zona, responsable, días sin visitas y 3 KPIs rápidos. Factible y rápido de implementar, se puede duplicar de algo ya existente.",
+      "⚠️ [10 jul] Discrepancia entre las dos minutas de esta misma reunión: el acta detallada usa 45 días para el umbral del \"chivato\", pero el informe ejecutivo menciona 60 días para esta nueva vista rápida — confirmar con Aris cuál aplica (¿son dos alertas distintas o es imprecisión de transcripción?) antes de construirla."
     ],
     pendientes: [
       "Construir el sistema de alerta \"chivato\" a 45 días",
       "Definir acción operativa cuando se dispara la alerta",
-      "Cuantificar impacto de los gyms \"zombi\" en métricas de cobertura reportadas"
+      "Cuantificar impacto de los gyms \"zombi\" en métricas de cobertura reportadas",
+      "Construir la pestaña rápida de gyms sin token/inactivos (corto plazo)",
+      "Confirmar con Aris el umbral correcto para la vista rápida (45 vs 60 días)"
     ],
     relacionado: ["cobertura-geografica", "predictor-churn"]
   },
@@ -222,10 +246,10 @@ const PROJECTS = [
     name: "RFM — Segmentación de Usuarios",
     icon: "📊",
     urgency: "amber",
-    estado: "En curso — cambio de metodología en marcha",
+    estado: "Prácticamente terminado — validado con 3 algoritmos, listo para presentar a heads",
     deadline: null,
     personas: ["Aris"],
-    actualizado: "2026-07-08",
+    actualizado: "2026-07-10",
     porque: "Clasifica la base de usuarios según comportamiento de uso (Recencia, Frecuencia, Monetario) para aplicar estrategias diferenciadas de retención, marketing y control de costos — incluyendo detección de usuarios \"tóxicos\".",
     estadoActual: [
       "Nueva metodología: se adopta K-means en lugar de la clasificación manual anterior.",
@@ -238,13 +262,23 @@ const PROJECTS = [
       "Discrepancia QuickSight vs Redshift en la cifra de Repase: ya diagnosticada y resuelta en la metodología SQL de Segmentación RFM.",
       "LTV todavía no está integrado al dashboard — bloquea la presentación formal.",
       "Esta segmentación alimenta directamente Q44 (Usuarios en Riesgo de Churn) — ver Predictor de Churn.",
-      "Acuerdo de presentación: Slack Clip de máx. 3 min + encuesta NPS dos semanas después del lanzamiento."
+      "Acuerdo de presentación: Slack Clip de máx. 3 min + encuesta NPS dos semanas después del lanzamiento.",
+      "[10 jul] Validación estadística: la categorización se corrió con 3 algoritmos distintos (K-means + otros dos) — los tres coincidieron significativamente, dando solidez estadística al modelo. Modelo prácticamente terminado; próximo paso: presentar a heads.",
+      "[10 jul] Hallazgo clave confirmado (consistente en ambas minutas de la reunión): el riesgo de un usuario (categorías tóxico/severo/plata) no depende del volumen total de visitas, sino de la cantidad de gimnasios distintos que visita — a mayor diversidad de gyms, mayor riesgo de elevar los costos de la red.",
+      "[10 jul] Se incorporaron las lógicas de Fitpass (gimnasios distintos por mes) para evitar clasificaciones erróneas; Fitpass se registra como un solo gimnasio en ciertos sistemas, se trabaja en una descarga que cuente los gimnasios reales.",
+      "🔴 [10 jul] Bloqueador técnico activo: no se pudo replicar el dashboard completo con las lógicas de Fitpass en QuickSight — los campos calculados no arrojan resultados correctos. Sugerencia discutida en la reunión: subir toda la información de Fitpass a Redshift y hacer los cálculos ahí.",
+      "[10 jul] Patrones de migración entre categorías (4 meses): mes 1 mayoría en \"Adopción\" → se congelan → sleepers (~28%, consistente con el 28% de \"dormidos\" ya identificado). Migración a \"tóxico severo\" más común desde la categoría PLAT, antigüedad promedio ~3 meses.",
+      "[10 jul] Recomendación del modelo: no contactar a sleepers con más de 3 meses de antigüedad — el contacto suele recordarles la suscripción activa y puede provocar cancelación en lugar de reactivación.",
+      "[10 jul] El proyecto de Predictor de Churn se cierra y se absorbe en este proyecto — el enfoque anterior, menos riguroso, queda descartado en favor de esta categorización validada con algoritmos."
     ],
     pendientes: [
       "Confirmar arranque del desarrollo con K-means",
       "Corregir conteo de Fitpass (multi-sucursal)",
       "Integrar LTV y fijar fecha de presentación formal",
-      "Cerrar criterios TPN/TP0"
+      "Cerrar criterios TPN/TP0",
+      "Presentar categorización RFM al equipo de heads para aprobación",
+      "Retomar con Gustavo la necesidad de subir tablas propias de Fitpass a Redshift",
+      "Compartir la query final de RFM con Aris para montaje del dashboard"
     ],
     relacionado: ["cupones-ltv", "predictor-churn", "etiqueta-fraude"]
   },
@@ -261,12 +295,14 @@ const PROJECTS = [
     estadoActual: [
       "TP7: pérdida confirmada de ~600 MXN por usuario — loop de abuso de cupones confirmado (conecta con el 28% de usuarios \"dormidos\" en RFM).",
       "TP1: en proceso de renegociación de condiciones.",
-      "Riesgo de CAC post-promoción identificado como parte del análisis RFM."
+      "Riesgo de CAC post-promoción identificado como parte del análisis RFM.",
+      "[10 jul] El dashboard (ligado a los componentes gratuitos de TP7) ya existe pero se mantiene oculto intencionalmente para no generar ruido. Decisión: Aris lo monitorea periódicamente y solo reporta si detecta algo anómalo — no se reactiva a menos que surja una alerta."
     ],
     pendientes: [
       "Cerrar renegociación de TP1",
       "Confirmar que el loop de TP7 quedó corregido (no solo diagnosticado)",
-      "Cuantificar impacto acumulado en LTV una vez corregido"
+      "Cuantificar impacto acumulado en LTV una vez corregido",
+      "Aris: mantener monitoreo periódico sin acción activa salvo anomalía"
     ],
     relacionado: ["rfm"]
   },
@@ -275,10 +311,10 @@ const PROJECTS = [
     name: "Predictor de Churn",
     icon: "📉",
     urgency: "amber",
-    estado: "Q44 en producción y validada — falta cruce con bajas legales",
+    estado: "Cerrado (10 jul 2026) — absorbido por RFM, ver proyecto RFM",
     deadline: null,
     personas: [],
-    actualizado: "2026-07-08",
+    actualizado: "2026-07-10",
     porque: "Permite anticipar qué usuarios están en riesgo de darse de baja, para poder actuar antes (retención) en lugar de solo reaccionar después.",
     estadoActual: [
       "Q44 \"Usuarios en Riesgo de Churn — Alertas Activas\" ya está en producción y validada — en la práctica, este query ES el predictor de churn.",
@@ -289,12 +325,12 @@ const PROJECTS = [
       "Hallazgo clave: \"Oro Nuevo\" cancela más que nadie (7.7%) — es un problema de adopción, no de satisfacción.",
       "La antigüedad es el predictor individual más fuerte de churn en todos los segmentos.",
       "Fraude: no tiene patrón predictivo útil desde la segmentación RFM — el sistema de detección de fraude ya lo captura por separado; no hay acción preventiva adicional posible desde este modelo.",
-      "Paso pendiente crítico: cruzar las alertas de Q44 contra los correos reales de bajas legales del equipo legal — sin esta validación, no se puede presentar con confianza (evidencia primero, no asumir que el modelo funciona)."
+      "Paso pendiente crítico: cruzar las alertas de Q44 contra los correos reales de bajas legales del equipo legal — sin esta validación, no se puede presentar con confianza (evidencia primero, no asumir que el modelo funciona).",
+      "[10 jul] Decisión de la reunión: este proyecto se cierra y se une al proyecto RFM — Aris/Miguel validaron la nueva categorización RFM con 3 algoritmos distintos, más rigurosa que el enfoque de churn anterior. Todo el trabajo de predicción de riesgo/abandono vive ahora en RFM — Segmentación de Usuarios."
     ],
     pendientes: [
-      "Hacer el cruce contra bajas legales",
-      "Medir precisión real de las 4 alertas tras el cruce",
-      "Decidir presentación formal una vez validado"
+      "Eliminar/archivar este proyecto como entidad separada — ya está unificado con RFM (hecho, 10 jul)",
+      "Ver pendientes activos en el proyecto RFM"
     ],
     relacionado: ["rfm", "chivato"]
   },
@@ -325,18 +361,20 @@ const PROJECTS = [
     name: "Cobertura Geográfica",
     icon: "🗺️",
     urgency: "blue",
-    estado: "En progreso",
+    estado: "En progreso, sin abordarse en detalle todavía",
     deadline: null,
     personas: [],
-    actualizado: "2026-06-30",
+    actualizado: "2026-07-10",
     porque: "Identificar zonas con baja densidad de gyms respecto a la demanda de usuarios, para priorizar expansión de la red donde más impacto tiene.",
     estadoActual: [
       "Gaps identificados en Mérida y Cancún — zonas con cobertura insuficiente respecto a la base de usuarios.",
-      "Se conecta con el hallazgo de que el 25% de la red actual son gyms \"zombis\" — la red \"aparenta\" más cobertura de la que realmente tiene."
+      "Se conecta con el hallazgo de que el 25% de la red actual son gyms \"zombis\" — la red \"aparenta\" más cobertura de la que realmente tiene.",
+      "⚠️ [10 jul] El informe ejecutivo de la reunión menciona gaps en \"MediCamp\" — usuarios con retorno insuficiente respecto a la base. No quedó claro si es una zona/cliente distinto a Mérida/Cancún o una imprecisión de transcripción — confirmar con Aris antes de tratarlo como hallazgo nuevo."
     ],
     pendientes: [
       "Cuantificar la brecha real en Mérida y Cancún (demanda vs oferta de gyms activos)",
-      "Cruzar con el dato de gyms zombis para tener una cifra de cobertura \"real\""
+      "Cruzar con el dato de gyms zombis para tener una cifra de cobertura \"real\"",
+      "Aclarar con Aris qué es \"MediCamp\" y si aplica como hallazgo nuevo"
     ],
     relacionado: ["chivato"]
   },
@@ -408,17 +446,21 @@ const PROJECTS = [
     name: "Tokens Fuera de Horario",
     icon: "⏰",
     urgency: "blue",
-    estado: "Reabierto — cambio de formato de fuente",
+    estado: "Avanzado, en validación final con el equipo de James",
     deadline: null,
-    personas: [],
-    actualizado: "2026-06-30",
+    personas: ["James"],
+    actualizado: "2026-07-10",
     porque: "Los check-ins (\"tokens\") fuera del horario declarado de un gym son una de las señales del score de fraude.",
     estadoActual: [
-      "El dashboard se había dado por cerrado, pero se reabrió porque cambió el formato de la fuente de datos original y dejó de funcionar correctamente."
+      "El dashboard se había dado por cerrado, pero se reabrió porque cambió el formato de la fuente de datos original y dejó de funcionar correctamente.",
+      "[10 jul] Aris alineó la consulta — ya está funcionando correctamente. Se hicieron las validaciones y se depositó en Notion.",
+      "[10 jul] Precisión alcanzada: ~95.3% (gap de error reducido de ~100% a ~4.7%, cifra consistente en ambas minutas de esta reunión). El remanente corresponde a casos con tolerancia (\"moving premium\") — fuera de horario pero aceptables.",
+      "[10 jul] Hay algunos registros con horarios incorrectos desde origen; no son muchos."
     ],
     pendientes: [
       "Ajustar el dashboard/proceso al nuevo formato de la fuente",
-      "Confirmar que vuelve a estar 100% funcional antes de darlo por cerrado de nuevo"
+      "Confirmar que vuelve a estar 100% funcional antes de darlo por cerrado de nuevo",
+      "Seguimiento con el equipo de James para que revaliden los horarios"
     ],
     relacionado: ["anti-fraude-roadmap", "etiqueta-fraude"]
   }
@@ -428,34 +470,45 @@ const ACUERDOS = [
   { id: "AC-01", texto: "Excluir el mes en curso de reportes de pago (evita comparaciones engañosas)." },
   { id: "AC-02", texto: "Mantener siempre una tab de validación de usuarios para auditoría." },
   { id: "AC-03", texto: "No modificar variables de la query base de Mau sin su participación directa." },
-  { id: "AC-04", texto: "Etiquetar y documentar todos los dashboards activos (urgente por governance Brasil)." }
+  { id: "AC-04", texto: "Etiquetar y documentar todos los dashboards activos (urgente por governance Brasil)." },
+  { id: "AC-05", texto: "(Nuevo, 10 jul 2026) El repositorio de dashboards es la fuente única oficial — nadie más debe crear dashboards por su cuenta sin coordinación con el equipo de datos." },
+  { id: "AC-06", texto: "(Nuevo, 10 jul 2026) Validación previa obligatoria — todo dashboard debe ser validado en cifras antes de publicarse, con respaldo de la fecha de validación y acuerdo de todos los involucrados." },
+  { id: "AC-07", texto: "(Nuevo, 10 jul 2026) Involucramiento temprano del equipo de datos — debe ser parte de los proyectos desde el inicio, no recibir productos terminados para \"arreglar\" después (detonante: sheet de Nueva Iniciativa 8k/9k)." },
+  { id: "RFM-1", texto: "Reglas fijas de RFM (no modificar sin instrucción): período de 28 días (4 semanas exactas); margen en dos versiones (solo copago usuario / copago + fee empresa); cancelación = fin de historia, upgrade/downgrade = continuidad, reactivación = nueva historia; repase real del CSV de feedbacks, no el tarificado. Confirmado 10 jul: el riesgo depende de la diversidad de gyms visitados, no del volumen de visitas; no contactar sleepers con más de 3 meses de antigüedad." }
 ];
 
 // Modo 1:1 — checklist semanal
 const CHECKLIST = {
   urgente: [
+    { title: "Sesión conjunta de depuración de dashboards", context: "Clasificar en el sheet maestro (\"Rosario Dashboard versión 2\") qué se muestra / no se muestra / obsoleto / pendiente. ~60 dashboards de Brasil con duplicados, Ops/Salesforce con hasta 3-4 versiones del mismo concepto.", question: "¿Ya se agendó la sesión? Traer el sheet maestro abierto.", link: "repositorio-dashboards" },
+    { title: "Presentar RFM a heads", context: "Modelo prácticamente terminado, validado con 3 algoritmos. Hallazgo clave: el riesgo depende de la diversidad de gyms visitados, no del volumen de visitas.", question: "¿Ya se agendó la presentación? ¿Falta algo de Aris para el montaje del dashboard final?", link: "rfm" },
+    { title: "Bloqueador FitPass → Redshift", context: "No se pudo replicar el dashboard de RFM con lógicas de Fitpass en QuickSight (campos calculados fallan). Sugerencia: subir tablas de Fitpass a Redshift.", question: "¿Ya se retomó con Gustavo? ¿Hay fecha estimada?", link: "rfm" },
     { title: "Governance Brasil (AC-04)", context: "Brasil va a borrar dashboards sin actividad reciente. Hay que etiquetar y documentar todos los dashboards activos antes de que pase.", question: "¿Ya se etiquetaron todos? ¿Cuántos faltan?", link: "repositorio-dashboards" },
-    { title: "Pagos — Error \"Time Out\" de HJK", context: "Pedir a Toño el push para resolverlo. Deadline del proyecto: 27 mayo.", question: "¿Toño ya hizo el push? ¿Sigue el error activo?", link: "control-pagos" }
+    { title: "Pagos — HJK pausado", context: "Fair sigue borrando/recargando datos casi a diario; la automatización queda en espera de que Capi libere capacidad. Angie sigue con proceso manual.", question: "¿Alguna señal de cuándo Capi tendría capacidad? ¿Angie sigue cómoda con el proceso manual?", link: "control-pagos" }
   ],
   proximas: [
-    { title: "RFM — avance de K-means y métrica de gyms visitados", context: "Se adoptó K-means como metodología. Se prioriza \"número de gyms visitados\" sobre total de visitas. Fitpass se contaba como un solo gym aunque el usuario visitara varias sucursales — sesgaba el costo.", question: "¿Ya arrancó el desarrollo con K-means? ¿Se corrigió el conteo de Fitpass?", link: "rfm" },
+    { title: "Umbral \"chivato\": 45 vs 60 días", context: "El proyecto de Gyms Inactivos usa 45 días para la alerta \"chivato\", pero el informe ejecutivo de la misma reunión menciona 60 días para la nueva vista rápida.", question: "Confirmar con Aris cuál es el umbral correcto antes de construir la pestaña.", link: "chivato" },
+    { title: "Confirmar \"MediCamp\"", context: "El informe ejecutivo menciona gaps en \"MediCamp\" (Cobertura Geográfica); no está claro si es zona/cliente real o error de transcripción.", question: "Preguntar directo a Aris qué es MediCamp.", link: "cobertura-geografica" },
     { title: "RFM — LTV y presentación formal", context: "Falta integrar Lifetime Value antes de presentar. Acuerdo: Slack Clip de máx. 3 min + encuesta NPS dos semanas después del lanzamiento.", question: "¿Cuánto falta para el LTV? ¿Ya hay fecha de presentación?", link: "rfm" },
-    { title: "Predictor de Churn — validación contra bajas legales", context: "El dashboard está listo, pero falta cruzar sus predicciones contra los correos reales de bajas legales del equipo legal.", question: "¿Ya se hizo el cruce? ¿Qué tan preciso resultó?", link: "predictor-churn" },
     { title: "TPN/TP0 — criterios de clasificación", context: "Dificultad para distinguir usuarios subsidiados (TP0) de usuarios de regalo (TPN). Proceso acordado: Aris manda resultados solo a Miguel para validar.", question: "¿Ya hay criterios definidos? ¿Los resultados llegaron validados?", link: "rfm" },
     { title: "Mensualidades \"perdonadas\"", context: "Usuarios con ciclos de pago vencidos que siguen activos en el sistema. Falta cuantificar el impacto financiero.", question: "¿Ya se identificó el universo de usuarios? ¿Qué tamaño tiene el problema?", link: null },
     { title: "Canibalización de campañas Marketing/Operaciones", context: "Riesgo de comunicaciones no coordinadas al mismo cliente. Miguel debía presentarlo en la reunión de líderes de Operaciones.", question: "¿Ya se presentó? ¿Hay protocolo de coordinación definido?", link: null },
     { title: "Etiqueta permanente de fraude", context: "Caso piloto: José Fermín. La variable ya existe en SQL, es técnicamente simple, pero no tiene fecha.", question: "Proponer un deadline concreto en este 1:1.", link: "etiqueta-fraude" },
-    { title: "Impacto Cupones/LTV — TP7 y TP1", context: "Pérdida de ~600 MXN por usuario en TP7 por abuso de cupones (loop confirmado); TP1 en proceso de renegociación.", question: "¿Cómo va la renegociación de TP1? ¿Se corrigió el loop de TP7?", link: "cupones-ltv" }
+    { title: "Impacto Cupones/LTV — TP7 y TP1", context: "Pérdida de ~600 MXN por usuario en TP7 por abuso de cupones (loop confirmado); TP1 en proceso de renegociación. Dashboard oculto intencionalmente, Aris solo monitorea.", question: "¿Cómo va la renegociación de TP1? ¿Se corrigió el loop de TP7?", link: "cupones-ltv" }
   ],
   revisar: [
-    { title: "Chivato de 45 días + Nueva Iniciativa 8k/9k", context: "Chivato: alerta automática a los 45 días de inactividad (umbral real de churn: 53 días; 25% de la red son \"zombis\"). Nueva iniciativa: canal de Slack con Cris y Juan.", question: "¿Hay avance en el chivato? ¿Ya existe el canal de Slack?", link: "chivato" },
+    { title: "Tokens fuera de horario — validación con James", context: "95.3% de precisión alcanzada, depositado en Notion. Pendiente que el equipo de James revalide los horarios.", question: "¿Hubo respuesta de James esta semana?", link: "tokens-horario" },
+    { title: "Repositorio de dashboards — publicación vía Capi", context: "Implementación técnica (intranet) delegada a Capi; prioridad del equipo de datos es depurar el catálogo, no publicar. Validar listado depurado con Juana.", question: "¿Capi ya tiene el sitio interno en marcha? ¿Ya se validó con Juana?", link: "repositorio-dashboards" },
+    { title: "Nueva Iniciativa 8k/9k", context: "Sheet difícil de entender; Aris cree que la bajada de datos es automatizable. Detonó el acuerdo AC-07 de involucramiento temprano.", question: "¿Sigue activo el canal de Slack con Cris y Juan?", link: "8k-9k" },
     { title: "Grupos QuickSight en Brasil (Manu)", context: "Para tener grupos locales en QS (CX, Gyms, Cams Enterprise) hay que pedir permiso a los admins de Brasil. Contacto: Manu.", question: "¿Ya se contactó a Manu? ¿Qué respondió?", link: null },
     { title: "Automatización de geolocalización (N8N)", context: "Pipeline con N8N + Python + Google Maps. Relacionado con Dani.", question: "¿Estado del pipeline?", link: "geo-n8n" },
-    { title: "Cruce de inventarios — Repositorio de Dashboards", context: "Pendiente entre Miguel y Aris para el repositorio estructurado (tabs Publicados/No publicados).", question: "¿Ya se hizo el cruce?", link: "repositorio-dashboards" }
+    { title: "Encuesta de satisfacción del repositorio", context: "Propuesta post-lanzamiento: calificación 1-5 estrellas por dashboard, formulario de feedback para calificaciones ≤3, capacitaciones selectivas por equipo (ej. CX).", question: "¿Se diseñó ya la encuesta? ¿Es viable la calificación integrada?", link: "repositorio-dashboards" }
   ],
   confirmar: [
     { title: "RFM: mes estandarizado a 28 días", context: "4 semanas exactas — confirmar que sigue así.", question: null, link: "rfm" },
-    { title: "Segmento 2 del RFM implementado", context: "Confirmar cierre del loop.", question: null, link: "rfm" }
+    { title: "Segmento 2 del RFM implementado", context: "Confirmar cierre del loop.", question: null, link: "rfm" },
+    { title: "Churn absorbido por RFM", context: "Proyecto de Predictor de Churn cerrado y unificado con RFM (10 jul 2026) — confirmar que no quedó ningún pendiente suelto del enfoque anterior.", question: null, link: "predictor-churn" },
+    { title: "3 nuevos Acuerdos Permanentes (AC-05, 06, 07)", context: "Governance del repositorio de dashboards + involucramiento temprano del equipo de datos — ver Acuerdos Permanentes.", question: null, link: null }
   ]
 };
 
